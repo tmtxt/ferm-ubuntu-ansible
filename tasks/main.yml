@@ -1,0 +1,23 @@
+---
+# tasks file for ferm
+- name: install ferm dependencies
+  sudo: yes
+  apt: name={{item}}
+  with_items:
+    - iptables
+    - ferm
+
+- name: add ferm config directory
+  sudo: yes
+  file: path={{item}} owner=root group=root mode=0700 state=directory
+  with_items:
+    - /etc/ferm
+    - /etc/ferm/input
+    - /etc/ferm/output
+    - /etc/ferm/forward
+
+- name: add ferm default config file
+  sudo: yes
+  template: >-
+    src=ferm.conf
+    dest=/etc/ferm/ferm.conf
