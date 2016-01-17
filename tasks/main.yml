@@ -21,3 +21,9 @@
   template: >-
     src=ferm.conf
     dest=/etc/ferm/ferm.conf
+  register: ferm_default_config_result
+
+- name: reload ferm
+  sudo: yes
+  command: ferm /etc/ferm/ferm.conf
+  when: ferm_default_config_result|changed
